@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * Base class for my tests
+ * Base class providing extensions for my tests
  */
 public abstract class TestBase extends ExampleBase {
     protected int nextOrderId = -1;
@@ -14,12 +14,11 @@ public abstract class TestBase extends ExampleBase {
 
     public Hashtable<Double, Contract> options = new Hashtable<Double, Contract>();
 
-    // Sleep safely (swallows interrupts)
-    protected void snooze(int millis) {
-        try {
-            sleep(millis);
-        } catch (Exception e) {
-        }
+    // Place given order, wait for reply
+    public void place(Contract contract, Order order) {
+        client.placeOrder(++nextOrderId, contract, order);
+        puts("Placed", order.m_orderRef, "order:", nextOrderId);
+        snooze(2000);
     }
 
     // Creates BAG Contract representing a butterfly option Combo
