@@ -15,40 +15,45 @@ public class TestModify extends TestBase {
         new TestModify().start();
     }
 
-    // This places order with bracket and listens to orders status
+    // This places orders and listens to orders status
     public void run() {
         try {
             // Make connection, wait for nextOrderId
             connectToTWS();
             while (nextOrderId == -1) snooze(1000);
 
-            // Place order with attached target for a regular Stock contract
-            System.out.println("\nPlacing order for a regular IBM stock");
-
             Contract contract = createContract("IBM", "STK", "SMART", "USD");
-            Order order = createOrder("BUY", 10, "LMT", 125.00, "GTC", null, true);
 
-//            client.placeOrder(nextOrderId++, contract, order);
+            puts("\nPlace order for a regular IBM stock");
+            Order order = createOrder("Original", "BUY", 100, "LMT", 180.00, "GTC", null, true);
+            place(contract, order);
+
+            puts("\nModify placed order for a regular IBM stock");
+            order.m_lmtPrice = 200.0;
+            client.placeOrder(nextOrderId, contract, order);
+            puts("Modified order:", nextOrderId);
             snooze(2000);
-            System.out.println("\nSee? Two sets of callbacks received: parent and stop. Everything works fine so far...");
 
+            puts("\nSee? Order modified successfully. Everything works fine so far...");
 
-            //  Define options Combo (let's try GOOGLE butterfly)
-            System.out.println("\nDefining options Combo (let's try GOOGLE butterfly)");
+            puts("\nDefining options Combo (let's try GOOGLE butterfly)");
             Contract combo = createButterfy("GOOG", "201301", "CALL", 500.0, 510.0, 520.0);
-            System.out.println(combo.m_comboLegs.size());
 
-            //  Place bracket order for an Options Combo
-            System.out.println("\nNow, placing order for an Option Combo with attached target");
-//            placeOrderWithAttach(combo, 10, 0.10, 1.0);
+            puts("\nNow, let's place order for an Option Combo");
 
-            // Now let's just wait for all Order confirmations/errors from TWS
+            order = createOrder("Original",  "BUY", 10, "LMT", 0.10, "GTC", null, true);
+            place(combo, order);
+
+            puts("\nModify placed order for an Option Combo");
+            order.m_lmtPrice = 0.20;
+            client.placeOrder(nextOrderId, contract, order);
+            puts("Modified order:", nextOrderId);
+            snooze(2000);
+
+            puts("\nSee? Order modification is rejected for no good reason!");
+
             snooze(4000);
-            System.out.println("\nSee? Instead of confirmation, target Order is rejected, sits inactive!");
-
-            snooze(4000);
-            System.out.println("\nSo, what shall we do now?");
-
+            puts("\nSo, what shall we do now?");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
