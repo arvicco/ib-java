@@ -81,4 +81,10 @@
         </java>
     </target>
 
+    <target name="raymund" depends="make">
+        <java classname="com.ib.client.examples.TestRaymund" fork="true">
+            <classpath refid="run.classpath"/>
+        </java>
+    </target>
+
 </project>
