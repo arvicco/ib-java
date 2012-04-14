@@ -9,7 +9,7 @@ import com.ib.client.*;
 public abstract class ExampleBase extends Thread implements EWrapper {
 
     protected EClientSocket client = new EClientSocket(this);
-    protected final static String TWS_HOST = "localhost";
+    protected final static String TWS_HOST = "localhost"; // "192.168.0.17"; //
     protected final static int TWS_PORT = 4001; //7496;
     protected final static int TWS_CLIENT_ID = 1;
     protected final static int MAX_WAIT_COUNT = 15; // 15 secs
@@ -18,7 +18,7 @@ public abstract class ExampleBase extends Thread implements EWrapper {
     //// Generic methods
 
     // Sleep safely (swallows interrupts)
-    protected void snooze(int millis) {
+    protected static void snooze(int millis) {
         try {
             sleep(millis);
         } catch (Exception e) {
@@ -26,7 +26,7 @@ public abstract class ExampleBase extends Thread implements EWrapper {
     }
 
     // Prints out a list of items
-    protected void puts(Object... items) {
+    protected static void puts(Object... items) {
         String msg = "";
         for (Object item : items) {
             msg += " " + item;
@@ -50,12 +50,15 @@ public abstract class ExampleBase extends Thread implements EWrapper {
 
     protected Order createOrder(String ref, String action, int quantity, String type,
                                 Double limitPrice, String tif, Integer parentId, boolean transmit) {
-        return createOrder("", action, quantity, type, null, null, null, null, true);
+        return createOrder(ref, action, quantity, type, limitPrice, null, tif, parentId, transmit);
     }
 
     protected Order createOrder(String ref, String action, int quantity, String type,
                                 Double limitPrice, Double auxPrice, String tif,
                                 Integer parentId, boolean transmit) {
+
+        puts("parentId:", parentId);
+
         Order order = new Order();
 
         order.m_action = action;

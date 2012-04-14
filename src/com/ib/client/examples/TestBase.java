@@ -15,10 +15,17 @@ public abstract class TestBase extends ExampleBase {
     public Hashtable<Double, Contract> options = new Hashtable<Double, Contract>();
 
     // Place given order, wait for reply
-    public void place(Contract contract, Order order) {
-        client.placeOrder(++nextOrderId, contract, order);
-        puts("Placed", order.m_orderRef, "order:", nextOrderId);
+    public void place(int id, Contract contract, Order order) {
+        client.placeOrder(id, contract, order);
+        puts("Placed", order.m_orderRef, "order:", id);
         snooze(2000);
+    }
+
+    // Place given order, wait for reply
+    public void place(Contract contract, Order order) {
+        puts(nextOrderId);
+        place(nextOrderId++, contract, order);
+        puts(nextOrderId);
     }
 
     // Creates BAG Contract representing a butterfly option Combo
@@ -54,7 +61,19 @@ public abstract class TestBase extends ExampleBase {
 
         // Return ComboLeg with a found conId
         int conId = options.get(strike).m_conId;
-        return new ComboLeg(conId, ratio, action, null, 0);
+
+        ComboLeg leg = new ComboLeg();
+
+        puts("ConId:", conId);
+
+        leg.m_conId = conId;
+        leg.m_action = action;
+        leg.m_ratio = ratio;
+//        leg.m_exchange = "SMART";
+        leg.m_openClose = 0;
+        leg.m_designatedLocation = "";
+
+        return leg; // new ComboLeg(conId, ratio, action, null, 0);
     }
 
     public void contractDetails(int reqId, ContractDetails contractDetails) {

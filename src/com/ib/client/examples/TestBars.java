@@ -30,13 +30,13 @@ public class TestBars extends ExampleBase {
 
             // Start monitoring all symbols
             String symbols[] = getSymbols();
-            System.out.println("Monitoring " + symbols.length + " symbols");
+            puts("Monitoring " + symbols.length + " symbols");
             for (String symbol : symbols) {
                 Contract contract = createContract(symbol, "STK", "SMART", "USD");
                 nextSymbolID++;
                 DataHolder holder = new DataHolder(contract, nextSymbolID);
 
-                System.out.println("Requesting: " + holder.getRequestID()+ "." + holder.getContract().m_symbol);
+                puts("Requesting: " + holder.getRequestID()+ "." + holder.getContract().m_symbol);
 
                 client.reqRealTimeBars(holder.getRequestID(), holder.getContract(), 5, "TRADES", false);
 
@@ -47,10 +47,10 @@ public class TestBars extends ExampleBase {
             // to how many are actually receiving data.
             while (true) {
                 sleep(1000);
-                System.out.println(getSymbolsReceivingData().size() + " symbols receiving data");
+                puts(getSymbolsReceivingData().size() + " symbols receiving data");
             }
         } catch (Exception e) {
-            System.out.println("Exception!");
+            puts("Exception!");
             e.printStackTrace();
         } finally {
             disconnectFromTWS();
