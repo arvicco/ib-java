@@ -22,38 +22,28 @@ public class TestModify extends TestBase {
             connectToTWS();
             while (nextOrderId == -1) snooze(1000);
 
-            Contract contract = createContract("IBM", "STK", "SMART", "USD");
-
-            puts("\nPlace order for a regular IBM stock");
-            Order order = createOrder("Original", "BUY", 100, "LMT", 180.00, "GTC", null, true);
-            place(contract, order);
-
-            puts("\nModify placed order for a regular IBM stock");
-            order.m_lmtPrice = 200.0;
-            client.placeOrder(nextOrderId, contract, order);
-            puts("Modified order:", nextOrderId);
-            snooze(2000);
-
-            puts("\nSee? Order modified successfully. Everything works fine so far...");
-
-            puts("\nDefining options Combo (let's try GOOGLE butterfly)");
+            puts("\nDefine options Combo (GOOGLE butterfly)");
             Contract combo = createButterfy("GOOG", "201301", "CALL", 500.0, 510.0, 520.0);
 
-            puts("\nNow, let's place order for an Option Combo");
+            puts("\nPlace order for an Option Combo");
 
-            order = createOrder("Original",  "BUY", 10, "LMT", 0.10, "GTC", null, true);
-            place(combo, order);
+            Order order = createOrder("Original",  "BUY", 10, "LMT", 0.10, "DAY", null, true);
+            place(nextOrderId, combo, order);
 
             puts("\nModify placed order for an Option Combo");
-            order.m_lmtPrice = 0.20;
-            client.placeOrder(nextOrderId, contract, order);
+            order.m_lmtPrice = 0.15;
+            order.m_tif = "GTC";
+
+            client.placeOrder(nextOrderId, combo, order);
             puts("Modified order:", nextOrderId);
             snooze(2000);
 
-            puts("\nSee? Order modification is rejected for no good reason!");
+            puts("\nSee? Order is modified. Cancelling it now");
 
-            snooze(4000);
-            puts("\nSo, what shall we do now?");
+            client.cancelOrder(nextOrderId);
+
+            snooze(2000);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
