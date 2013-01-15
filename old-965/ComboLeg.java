@@ -13,7 +13,7 @@ public class ComboLeg {
 
     public int 					m_conId;
     public int 					m_ratio;
-    public String 				m_action; // BUY/SELL/SSHORT/SSHORTX
+    public String 				m_action; // BUY/SELL/
     public String 				m_exchange;
     public int 					m_openClose;
     
