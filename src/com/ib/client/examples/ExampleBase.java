@@ -10,7 +10,7 @@ public abstract class ExampleBase extends Thread implements EWrapper {
 
     protected EClientSocket client = new EClientSocket(this);
     protected final static String TWS_HOST = "localhost"; // "192.168.0.17"; //
-    protected final static int TWS_PORT = 4001; //7496;
+    protected final static int TWS_PORT = 7496;  // 4001; //
     protected final static int TWS_CLIENT_ID = 1;
     protected final static int MAX_WAIT_COUNT = 15; // 15 secs
     protected final static int WAIT_TIME = 1000; // 1 sec
@@ -244,6 +244,6 @@ public abstract class ExampleBase extends Thread implements EWrapper {
     public void marketDataType(int reqId, int marketDataType) {
     }
 
-//    public void commissionReport(CommissionReport commissionReport) {
-//    }
+    public void commissionReport(CommissionReport commissionReport) {
+    }
 }

@@ -87,4 +87,22 @@
         </java>
     </target>
 
+    <target name="placement" depends="make">
+        <java classname="com.ib.client.examples.TestPlacement" fork="true">
+            <classpath refid="run.classpath"/>
+        </java>
+    </target>
+
+    <target name="fundamental" depends="make">
+        <java classname="com.ib.client.examples.TestFundamental" fork="true">
+            <classpath refid="run.classpath"/>
+        </java>
+    </target>
+
+    <target name="contract_data" depends="make">
+        <java classname="com.ib.client.examples.TestContractData" fork="true">
+            <classpath refid="run.classpath"/>
+        </java>
+    </target>
+
 </project>

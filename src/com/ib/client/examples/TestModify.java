@@ -2,6 +2,7 @@ package com.ib.client.examples;
 
 import com.ib.client.Contract;
 import com.ib.client.Order;
+import com.ib.client.OrderComboLeg;
 
 /**
  * Testing modifications for Combo orders
@@ -27,11 +28,18 @@ public class TestModify extends TestBase {
 
             puts("\nPlace order for an Option Combo");
 
-            Order order = createOrder("Original",  "BUY", 10, "LMT", 0.10, "DAY", null, true);
+            Order order = createOrder("Original", "BUY", 10, "LMT", 0.01, "DAY", null, true);
+
+            for (int i = 0; i < 3; i++) {
+                OrderComboLeg legPrice = new OrderComboLeg(); // 0.0
+                order.m_orderComboLegs.add(legPrice);
+            }
+
             place(nextOrderId, combo, order);
 
             puts("\nModify placed order for an Option Combo");
-            order.m_lmtPrice = 0.15;
+            order.m_totalQuantity = 15;
+            order.m_lmtPrice = 0.06;
             order.m_tif = "GTC";
 
             client.placeOrder(nextOrderId, combo, order);

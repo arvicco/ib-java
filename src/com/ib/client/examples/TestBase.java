@@ -69,7 +69,7 @@ public abstract class TestBase extends ExampleBase {
         leg.m_conId = conId;
         leg.m_action = action;
         leg.m_ratio = ratio;
-//        leg.m_exchange = "SMART";
+        leg.m_exchange = "SMART";
         leg.m_openClose = 0;
         leg.m_designatedLocation = "";
 
@@ -82,8 +82,10 @@ public abstract class TestBase extends ExampleBase {
         // Puts received contract into options Hash, keyed by strike
         Contract contract = contractDetails.m_summary;
         if (contract != null && "OPT".equals(contract.m_secType)) {
-            System.out.println(" [API.contractDetails] for " + contract.m_symbol + "  " + contract.m_expiry + "  " + contract.m_right + "  " + contract.m_strike);
+            puts(" [API.contractDetails] for", contract.m_symbol, contract.m_expiry, contract.m_right, contract.m_strike);
             options.put(contract.m_strike, contract);
+        } else {
+            puts(" [API.contractDetails] for", contract.m_symbol);
         }
     }
 
